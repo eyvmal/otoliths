@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: lightgray;
+}
+
+.column {
+    width: 20px;
+    background-color: gray;
+    margin: 10px;
+    position: relative;
+}
+
+.percentage {
+    position: absolute;
+    bottom: calc(0% - 25px); /* Adjust the distance below the column as needed */
+}
+
+#contentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+#contentHeader {
+    text-align: center;
+    font-family: sans-serif;
+}
+
+#histogramContainer {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+#histogram {
+    display: flex;
+    align-items: flex-end;
+    height: 300px;
+    position: relative; /* Add position relative */
+}
+
+#refreshBtn{
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+#refreshBtn, #switchGamemodeBtn {
+    padding: 10px 20px;
+    border: 2px solid;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#pictureContainer {
+    display: flex;
+    justify-content: center;
+}
+
+/* Easymode spesific */
+#pictureOne,
+#pictureTwo {
+    width: 50%;
+    height: 50%;
+    cursor: pointer;
+}
+#pictureOne{
+    margin-right: 20px;
+}
+
+/* Hardmode spesific */
+#pictureHard {
+    width: 50%;
+}
+
+#btnContainer {
+    margin: 0 10px;
+    position: fixed;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#humanBtn, #aiBtn {
+    margin: 5px;
+    padding: 10px 20px;
+    border: 2px solid;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+}
