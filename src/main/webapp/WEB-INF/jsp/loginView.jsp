@@ -10,7 +10,6 @@
 <body>
 <div id="contentContainer">
 	<div id="loginContainer">
-		<p id="redirectMessage">${redirectMessage}</p>
 		<form action="login" method="post">
 			<fieldset id="formContainer">
 				Whats your name?<br>
@@ -20,6 +19,11 @@
 				<input type="submit" value="Start"/>
 			</fieldset>
 		</form>
+	</div>
+	<div id="infoContainer">
+		<p>Easymode will show two pictures where one is annotated by a human and the other is annotated by AI.
+			Your job is to find out which one is the human annotated one.</p><br>
+		<p>Hardmode will show only one picture. And you will have to guess if it's annotated by a human or an AI.</p>
 	</div>
 </div>
 </body>
