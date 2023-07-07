@@ -13,7 +13,9 @@
     <h2 id="contentHeader">Is the picture annotated by a human or AI?</h2>
     <p id="contentDescription">Make your guess by clicking the buttons below the picture</p>
     <div id="pictureContainer">
-        <img id="pictureHard" src="" alt="Picture">
+        <div class="pictureWrapperHard">
+            <img id="pictureHard" src="" alt="Picture">
+        </div>
     </div>
     <div id="btnContainer">
         <button id="humanBtn">Human</button>
@@ -21,34 +23,37 @@
     </div>
     <div id="histogramContainer">
         <div id="histogram">
-            <div class="column" id="correct-1" style="height: ${histogram[0] + histogram[1] - 1}%;">
+            <div class="column" id="column-0" style="height: ${histogram[0] + histogram[1] - 1}%;">
+                <span class="percentage">0%</span>
+            </div>
+            <div class="column" id="column-1" style="height: ${histogram[0] + histogram[1] - 1}%;">
                 <span class="percentage">10%</span>
             </div>
-            <div class="column" id="correct-2" style="height: ${histogram[2]}%;">
+            <div class="column" id="column-2" style="height: ${histogram[2]}%;">
                 <span class="percentage">20%</span>
             </div>
-            <div class="column" id="correct-3" style="height: ${histogram[3]}%;">
+            <div class="column" id="column-3" style="height: ${histogram[3]}%;">
                 <span class="percentage">30%</span>
             </div>
-            <div class="column" id="correct-4" style="height: ${histogram[4]}%;">
+            <div class="column" id="column-4" style="height: ${histogram[4]}%;">
                 <span class="percentage">40%</span>
             </div>
-            <div class="column" id="correct-5" style="height: ${histogram[5]}%;">
+            <div class="column" id="column-5" style="height: ${histogram[5]}%;">
                 <span class="percentage">50%</span>
             </div>
-            <div class="column" id="correct-6" style="height: ${histogram[6]}%;">
+            <div class="column" id="column-6" style="height: ${histogram[6]}%;">
                 <span class="percentage">60%</span>
             </div>
-            <div class="column" id="correct-7" style="height: ${histogram[7]}%;">
+            <div class="column" id="column-7" style="height: ${histogram[7]}%;">
                 <span class="percentage">70%</span>
             </div>
-            <div class="column" id="correct-8" style="height: ${histogram[8]}%;">
+            <div class="column" id="column-8" style="height: ${histogram[8]}%;">
                 <span class="percentage">80%</span>
             </div>
-            <div class="column" id="correct-9" style="height: ${histogram[9]}%;">
+            <div class="column" id="column-9" style="height: ${histogram[9]}%;">
                 <span class="percentage">90%</span>
             </div>
-            <div class="column" id="correct-10" style="height: ${histogram[10]}%;">
+            <div class="column" id="column-10" style="height: ${histogram[10]}%;">
                 <span class="percentage">100%</span>
             </div>
         </div>
