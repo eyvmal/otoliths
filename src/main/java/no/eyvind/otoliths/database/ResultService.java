@@ -18,6 +18,7 @@ public class ResultService {
         this.hardResultsRepo = hardResultsRepo;
     }
 
+    // Lagrer resultatet i databasen
     public void addResult(String username, int score, String difficulty) {
         if (difficulty.equals("easymode")) {
             easyResultsRepo.save(new EasyResults(username, score, new Date()));
@@ -30,6 +31,7 @@ public class ResultService {
 
         List<Integer> scoreList;
 
+        // Henter ut riktige resultater basert på vanskelighetsgraden
         if(difficulty.equals("easymode")) {
             scoreList = easyResultsRepo.findAll()
                     .stream()
@@ -42,15 +44,17 @@ public class ResultService {
                     .toList();
         }
 
+        // Regner ut hvor mange prosent hvert resultat er verdt
         int prosent = 100 / scoreList.size();
 
         List<Integer> list = new ArrayList<>();
 
         for (int i = 0; i <= 10; i++) {
-            int finalI = i; // Denne måtte med fordi den likte ikke å bruke bare i alene i streamene
+            // Denne virker unødvendig, men måtte med for at koden skulle funke
+            int finalI = i;
 
             // Hvis ingen har fått dette resultatet enda,
-            // sett den til 1 slik at den er synlig i histogrammet
+            // setter vi den til 1 slik at den blir synlig i histogrammet
             if(scoreList.stream().filter(score -> score == finalI).count() == 0) {
                 list.add(1);
                 continue;

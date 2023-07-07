@@ -19,18 +19,12 @@ public class LoginController {
 	@Value("${app.message.invalidUsername}") private String INVALID_USERNAME_MESSAGE;
 	@Value("${app.url.login}")   private String LOGIN_URL;
 	@Value("${app.url.homepage}") private String HOMEPAGE_URL;
-	
-	/* 
-	 * GET /login er forespørselen for å hente login-skjema.
-	 */
+
 	@GetMapping
     public String getLoginPage() {
 		return "loginView";
     }
 
-	/* 
-	 * POST /login er forespørselen for å logge inn.
-	 */
 	@PostMapping
     public String tryLogin(@RequestParam String username, @RequestParam String difficulty,
     		HttpServletRequest request,	RedirectAttributes ra) {

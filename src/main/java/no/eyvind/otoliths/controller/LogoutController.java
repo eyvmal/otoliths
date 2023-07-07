@@ -16,10 +16,7 @@ public class LogoutController {
 	
 	@Value("${app.message.loggedOut}") private String LOGGED_OUT_MESSAGE;
 	@Value("${app.url.login}") private String LOGIN_URL;
-	
-	/* 
-	 * POST /logout er forespørselen for å logge ut.
-	 */
+
 	@PostMapping
     public String loggUt(HttpSession session, RedirectAttributes ra) {
 		

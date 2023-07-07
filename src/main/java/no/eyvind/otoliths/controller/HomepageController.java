@@ -31,6 +31,7 @@ public class HomepageController {
     @GetMapping
     public String showHomepage(HttpSession session, RedirectAttributes ra, Model model) {
 
+        // Sjekker om man har en aktiv sesjon. Hvis ikke sendes du til login
         if (!LoginUtil.isUserLoggedIn(session)) {
             ra.addFlashAttribute("redirectMessage", TIMED_OUT_MESSAGE);
             return "redirect:" + LOGIN_URL;
@@ -38,29 +39,32 @@ public class HomepageController {
 
         String difficulty = (String)session.getAttribute("difficulty");
 
-        // Oppdatere histogrammet
+        // Oppdatere histogrammet med valgt vanskelighetsgrad
         resultList = resultService.calculateHistogram(difficulty);
         model.addAttribute("histogram", resultList);
 
         if (difficulty.equals("easymode")) {
-            // Update the view histogram to show results of easy mode
+            // Videresender deg til easymodeView
             return "easymodeView";
         } else {
-            // Update the view histogram to show results of hard mode
+            // Videresender deg til hardmodeView
             return "hardmodeView";
         }
     }
 
+    // Funksjon for å bytte gamemode
     @PostMapping(params = "action=changeGamemode")
     public String changeGamemode(HttpSession session, RedirectAttributes ra) {
 
         String difficulty = (String)session.getAttribute("difficulty");
 
+        // Sjekker hvilken vanskelighetsgrad du har aktiv, og bytter den
         if(difficulty.equals("easymode")) {
             session.setAttribute("difficulty", "hardmode");
         } else {
             session.setAttribute("difficulty", "easymode");
         }
+        // Laster inn siden på nytt
         return "redirect:" + HOMEPAGE_URL;
     }
 
@@ -68,9 +72,11 @@ public class HomepageController {
     public void showResults(@RequestBody int correctGuesses, Model model,
             HttpSession session, RedirectAttributes ra) {
 
+        // Henter litt info fra sesjonen
         String username = (String)session.getAttribute("username");
         String difficulty = (String)session.getAttribute("difficulty");
 
+        // Lagrer resultatet til postgreSQL databasen
         resultService.addResult(username, correctGuesses, difficulty);
     }
 }

@@ -14,70 +14,75 @@ const shownPictures = [];
 const chosenPictures = [];
 let pictureList = [];
 
-// Adding event listeners for clicking on the buttons
+// Legger til eventlisteners for å klikke på bildene
 buttonHuman.addEventListener("click", () => choose(picture.src));
 buttonAI.addEventListener("click", () => choose(picture.src));
 
 onLoad();
 
-// What to do on page startup
+// Funksjoner som skal kjøres ved innlastning
 function onLoad() {
     initiatePictureList();
     loadNextPicture();
 }
 
 function initiatePictureList() {
-    // Creating the list a set amount of pictures
+    // Lager en liste over tilgjengelige bilder
     for(let i = 1; i <= TOTAL_PICTURES; i++) {
         pictureList.push(i);
     }
-    // Shuffle the list
+    // Stokker listen
     pictureList.sort((a, b) => 0.5 - Math.random());
     console.log("Shuffled list: " + pictureList); // Debug
 }
 
-// Loading next pictures for comparison
+// Laster inn de neste bildene
 function loadNextPicture() {
-    // Check if the max number of pictures is reached
+    // Sjekke om maks antall bilder er nådd
     if (shownPictures.length < maxPictures) {
-        // Update pictures shown on the website
-        // Also randomizes the order
+        // Oppdaterer bildene på nettsiden
+        // Bytter også om bilde1 og bilde2 tilfeldig
         switch (randomNumber(2)) {
             case 1:
-                picture.src = `https://malde.org/otoliths/human%20annotated/fig_${randomNum}.png`;
-                shownPictures.push(randomNum);
+                picture.src = `https://malde.org/otoliths/human%20annotated/fig_${pictureList[0]}.png`;
                 // console.log(shownPictures); // Debug!
                 break;
             case 2:
-                picture.src = `https://malde.org/otoliths/computer%20annotated/fig_${randomNum}.png`;
-                shownPictures.push(randomNum);
+                picture.src = `https://malde.org/otoliths/computer%20annotated/fig_${pictureList[0]}.png`;
                 // console.log(shownPictures); // Debug!
                 break;
         }
+
+        shownPictures.push(pictureList[0]);
+        pictureList.shift();
+        console.log("Shown pictures: " + shownPictures); // Debug!
     } else {
         showResults();
     }
 }
 
+// Sjekker om bilde du klikket på er menneske eller AI
+// Gjør dette ved å sjekke om bilde-linken inneholder "human" eller ikke
+// Hvis bildene skal lagres lokalt må denne skrives om
 function choose(choice) {
     if (chosenPictures.length < 10) {
         chosenPictures.push(choice.includes("human") ? "correct" : "wrong");
         // console.log(chosenPictures); // Debug
     }
-    // Load new pictures
     loadNextPicture();
 }
 
-// Fixes numbers below 10 to start with 0.
+// Legger til en 0 forran bilder med kun ett siffer
 function addZeros(number) {
     return number > 9 ? number : "0" + number;
 }
 
-// Generates a random number within the range
+// Genererer et tilfeldig tall med maks som input
 function randomNumber(range) {
     return Math.floor(Math.random() * range) + 1;
 }
 
+// Teller opp antall riktige
 function calculateCorrect() {
     let correctGuesses = 0;
     for (let i = 0; i < chosenPictures.length; i++) {
@@ -92,6 +97,7 @@ function calculateCorrect() {
     return correctGuesses;
 }
 
+// Sender resultatet videre til backend for å lagres i databasen
 function showResults() {
     const correctGuesses = calculateCorrect();
     console.log(correctGuesses);
