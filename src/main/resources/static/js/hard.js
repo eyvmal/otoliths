@@ -8,53 +8,51 @@ const btnContainer = document.querySelector("#btnContainer");
 const buttonHuman = document.querySelector("#humanBtn");
 const buttonAI = document.querySelector("#aiBtn");
 
+const TOTAL_PICTURES = 60;
+const maxPictures = 10;
+const shownPictures = [];
+const chosenPictures = [];
+let pictureList = [];
 
 // Adding event listeners for clicking on the buttons
 buttonHuman.addEventListener("click", () => choose(picture.src));
 buttonAI.addEventListener("click", () => choose(picture.src));
 
-const maxPictures = 10;
-const shownPictures = [];
-const chosenPictures = [];
-
 onLoad();
 
 // What to do on page startup
 function onLoad() {
+    initiatePictureList();
     loadNextPicture();
+}
+
+function initiatePictureList() {
+    // Creating the list a set amount of pictures
+    for(let i = 1; i <= TOTAL_PICTURES; i++) {
+        pictureList.push(i);
+    }
+    // Shuffle the list
+    pictureList.sort((a, b) => 0.5 - Math.random());
+    console.log("Shuffled list: " + pictureList); // Debug
 }
 
 // Loading next pictures for comparison
 function loadNextPicture() {
     // Check if the max number of pictures is reached
     if (shownPictures.length < maxPictures) {
-        // loop to generate a NEW number
-        while (true) {
-            let randomNum = randomNumber(60);
-            randomNum = addZeros(randomNum); // Make 1-9 => 01-09
-
-            // If number isn't new, try again
-            if (!shownPictures.includes(randomNum)) {
-                // Update pictures shown on the website
-                // Also randomizes the order
-                switch (randomNumber(2)) {
-                    case 1:
-                        picture.src = `https://malde.org/otoliths/human%20annotated/fig_${randomNum}.png`;
-                        shownPictures.push(randomNum);
-                        // console.log(shownPictures); // Debug!
-                        break;
-                    case 2:
-                        picture.src = `https://malde.org/otoliths/computer%20annotated/fig_${randomNum}.png`;
-                        shownPictures.push(randomNum);
-                        // console.log(shownPictures); // Debug!
-                        break;
-                }
-            } else {
-                // I believe this will fix double clicks
-                chosenPictures.pop();
+        // Update pictures shown on the website
+        // Also randomizes the order
+        switch (randomNumber(2)) {
+            case 1:
+                picture.src = `https://malde.org/otoliths/human%20annotated/fig_${randomNum}.png`;
+                shownPictures.push(randomNum);
+                // console.log(shownPictures); // Debug!
                 break;
-            }
-            break; // Breaks the loop
+            case 2:
+                picture.src = `https://malde.org/otoliths/computer%20annotated/fig_${randomNum}.png`;
+                shownPictures.push(randomNum);
+                // console.log(shownPictures); // Debug!
+                break;
         }
     } else {
         showResults();
