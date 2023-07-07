@@ -14,3 +14,12 @@ When the user connects to the page they will be redirected to a login where they
 There are two difficulties: easy and hard.
 - Easymode will show you the same picture annotated by both a human and an AI and youre going to click the picture that is annotated by a human.
 - Hardmode will only show either the picture annotated by a human or the one annotated by the AI and you have to guess which one is shown.
+
+# Todo:
+- Add admin page
+- Add top results
+- Add more info on the webpage
+- Save to local file
+
+# Bugs:
+- Getting a 404 error when posting the results from js to Java. Not sure why
