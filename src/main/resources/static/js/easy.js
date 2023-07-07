@@ -94,8 +94,7 @@ function calculateCorrect() {
 
 function showResults() {
     const correctGuesses = calculateCorrect();
-    console.log(correctGuesses);
-    document.getElementById("correct-" + correctGuesses).style.backgroundColor =
+    document.getElementById("column-" + correctGuesses).style.backgroundColor =
         "green";
 
     let url = "/";

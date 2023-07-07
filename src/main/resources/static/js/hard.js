@@ -97,7 +97,7 @@ function calculateCorrect() {
 function showResults() {
     const correctGuesses = calculateCorrect();
     console.log(correctGuesses);
-    document.getElementById("correct-" + correctGuesses).style.backgroundColor =
+    document.getElementById("column-" + correctGuesses).style.backgroundColor =
         "green";
 
     let url = "/";
@@ -112,7 +112,6 @@ function showResults() {
             contentHeader.textContent = "Results";
             contentDescription.textContent =
                 "The histogram is showing your score compared to other people. Your score is highlighted in green";
-
             pictureContainer.style.display = "none";
             btnContainer.style.display = "none";
             histogramContainer.style.display = "flex";

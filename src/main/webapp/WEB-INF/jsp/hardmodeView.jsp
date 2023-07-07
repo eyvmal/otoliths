@@ -23,10 +23,10 @@
     </div>
     <div id="histogramContainer">
         <div id="histogram">
-            <div class="column" id="column-0" style="height: ${histogram[0] + histogram[1] - 1}%;">
+            <div class="column" id="column-0" style="height: ${histogram[0]}%;">
                 <span class="percentage">0%</span>
             </div>
-            <div class="column" id="column-1" style="height: ${histogram[0] + histogram[1] - 1}%;">
+            <div class="column" id="column-1" style="height: ${histogram[1]}%;">
                 <span class="percentage">10%</span>
             </div>
             <div class="column" id="column-2" style="height: ${histogram[2]}%;">
@@ -58,7 +58,11 @@
             </div>
         </div>
         <button id="refreshBtn" onclick="location.reload()">Try again</button>
-        <button type="submit" id="switchGamemodeBtn">Try easymode</button>
+        <br>
+        <form method="post">
+            <input type="hidden" name="action" value="changeGamemode"></input>
+            <button type="submit" id="switchGamemodeBtn">Try easymode</button>
+        </form>
     </div>
 </div>
 
