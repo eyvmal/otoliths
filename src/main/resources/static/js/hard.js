@@ -4,6 +4,7 @@ const histogramContainer = document.querySelector("#histogramContainer");
 const contentHeader = document.querySelector("#contentHeader");
 const contentDescription = document.querySelector("#contentDescription");
 const btnContainer = document.querySelector("#btnContainer");
+const pictureNumber = document.querySelector("#pictureNumber");
 
 const buttonHuman = document.querySelector("#humanBtn");
 const buttonAI = document.querySelector("#aiBtn");
@@ -55,6 +56,7 @@ function loadNextPicture() {
 
         shownPictures.push(pictureList[0]);
         pictureList.shift();
+        pictureNumber.textContent = `Guess ${shownPictures.length}/${maxPictures}`;
         console.log("Shown pictures: " + shownPictures); // Debug!
     } else {
         showResults();
