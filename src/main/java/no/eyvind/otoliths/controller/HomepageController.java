@@ -1,8 +1,7 @@
 package no.eyvind.otoliths.controller;
 
-import no.eyvind.otoliths.database.ResultService;
+import no.eyvind.otoliths.entity.LocalStorageService;
 import no.eyvind.otoliths.util.LoginUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +22,7 @@ public class HomepageController {
     @Value("${app.url.login}")   private String LOGIN_URL;
     @Value("${app.url.homepage}") private String HOMEPAGE_URL;
 
-    @Autowired
-    ResultService resultService;
-
+    LocalStorageService lss = new LocalStorageService();
     List<Integer> resultList;
 
     @GetMapping
@@ -40,8 +37,9 @@ public class HomepageController {
         String difficulty = (String)session.getAttribute("difficulty");
 
         // Oppdatere histogrammet med valgt vanskelighetsgrad
-        resultList = resultService.calculateHistogram(difficulty);
-        model.addAttribute("histogram", resultList);
+        resultList = lss.calculateHistogram(difficulty);
+        if (resultList != null)
+            model.addAttribute("histogram", resultList);
 
         if (difficulty.equals("easymode")) {
             // Videresender deg til easymodeView
@@ -77,6 +75,6 @@ public class HomepageController {
         String difficulty = (String)session.getAttribute("difficulty");
 
         // Lagrer resultatet til postgreSQL databasen
-        resultService.addResult(username, correctGuesses, difficulty);
+        lss.addResult(username, correctGuesses, difficulty);
     }
 }

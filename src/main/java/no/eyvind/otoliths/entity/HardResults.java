@@ -1,11 +1,12 @@
 package no.eyvind.otoliths.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(schema = "otoliths", name = "hardresults")
-public class HardResults {
+// @Table(schema = "otoliths", name = "hardresults")
+public class HardResults implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
