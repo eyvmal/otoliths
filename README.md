@@ -3,10 +3,10 @@ This is a browser-minigame where the user is going to guess if the picture is an
 
 # Setup
 - clone the repo
-- add your own SQLdatabase in the application.properties file to store the results
 - install Java 17 and maven
 - compile the project using maven
 - run the .jar
+- To reset the results, delete the .ser files in src/main/webapp/WEB-INF/ and create new ones with the exact same names
 
 # About
 The project is built using Java Spring MVC as the backend and html/css/js as the frontend.
@@ -18,8 +18,5 @@ There are two difficulties: easy and hard.
 # Todo:
 - Add admin page
 - Add top results
-- Add more info on the webpage
-- Save to local file
-
-# Bugs:
-- Getting a 404 error when posting the results from js to Java. Not sure why
+- Move pictures to local storage
+- Add thread safety on read/write methods
