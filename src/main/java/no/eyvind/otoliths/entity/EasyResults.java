@@ -1,18 +1,16 @@
 package no.eyvind.otoliths.entity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-// @Table(schema = "otoliths", name = "easyresults")
 public class EasyResults implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @JsonProperty("username")
     private String username;
+    @JsonProperty("score")
     private int score;
+    @JsonProperty("date")
     private Date date;
 
     public EasyResults() {}
@@ -20,14 +18,6 @@ public class EasyResults implements Serializable {
         this.username = username;
         this.score = score;
         this.date = date;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -57,7 +47,6 @@ public class EasyResults implements Serializable {
     @Override
     public String toString() {
         return "EasyResults{" +
-                "id=" + id +
                 ", username='" + username + '\'' +
                 ", score=" + score +
                 ", date=" + date +

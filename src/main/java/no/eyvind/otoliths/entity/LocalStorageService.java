@@ -1,88 +1,86 @@
 package no.eyvind.otoliths.entity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class LocalStorageService {
-    private String easyPath = "src/main/webapp/WEB-INF/easy_results.ser";
-    private String hardPath = "src/main/webapp/WEB-INF/hard_results.ser";
+    private final String easyPath = "src/main/webapp/WEB-INF/easy_results.json";
+    private final String hardPath = "src/main/webapp/WEB-INF/hard_results.json";
 
     private ArrayList<EasyResults> easyResultsList;
     private ArrayList<HardResults> hardResultsList;
 
     public LocalStorageService() {
-        // Read easy_results file
-        // Må kanskje også gjøres via thread og synchronize
-        try{
-            FileInputStream readData = new FileInputStream(easyPath);
-            if (readData.available() > 0) {
-                ObjectInputStream readStream = new ObjectInputStream(readData);
-
-                easyResultsList = (ArrayList<EasyResults>) readStream.readObject();
-                readStream.close();
-            } else {
-                System.out.println("File is empty. Creating new Arraylist");
-                easyResultsList = new ArrayList<>();
+        // Laste inn easy_resultatene
+        try {
+            File jsonFile = new File(easyPath);
+            if (!jsonFile.exists()) { // Oppretter ny fil hvis den ikke allerede finnes
+                jsonFile.createNewFile();
+                System.out.println("Created easy_results.json");
             }
-        }catch (Exception e) {
+
+            if (jsonFile.length() > 0) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                easyResultsList = (ArrayList<EasyResults>) objectMapper.readValue(new File(easyPath), new TypeReference<List<EasyResults>>() {});
+                System.out.println("Objects loaded from easy_results.json");
+            } else {
+                easyResultsList = new ArrayList<>();
+                System.out.println("Nothing to load from easy_results.json");
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Read hard_results file
-        try{
-            FileInputStream readData = new FileInputStream(hardPath);
-            if (readData.available() > 0) {
-                ObjectInputStream readStream = new ObjectInputStream(readData);
-
-                hardResultsList = (ArrayList<HardResults>) readStream.readObject();
-                readStream.close();
-            } else {
-                System.out.println("File is empty. Creating new Arraylist");
-                hardResultsList = new ArrayList<>();
+        // Laste inn hard_resultatene
+        try {
+            File jsonFile = new File(hardPath);
+            if (!jsonFile.exists()) { // Oppretter ny fil hvis den ikke allerede finnes
+                jsonFile.createNewFile();
+                System.out.println("Created hard_results.json");
             }
-        }catch (Exception e) {
+
+            if (jsonFile.length() > 0) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                hardResultsList = (ArrayList<HardResults>) objectMapper.readValue(new File(hardPath), new TypeReference<List<HardResults>>() {});
+                System.out.println("Objects loaded from hard_results.json");
+            } else {
+                hardResultsList = new ArrayList<>();
+                System.out.println("Nothing to load from hard_results.json");
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // Legger resultatet inn i listen
+    // Legger resultatet inn i listen lokalt
     public void addResult(String username, int score, String difficulty) {
         if (difficulty.equals("easymode")) {
             easyResultsList.add(new EasyResults(username, score, new Date()));
         } else if (difficulty.equals("hardmode")) {
             hardResultsList.add(new HardResults(username, score, new Date()));
         }
-        // Lagrer til databasen
-        // Bør gjøres via thread og synchronize
-        save();
+        save(difficulty);
     }
 
-    public void save() {
-        // Lagre easyResults til lokal fil
-        try{
-            FileOutputStream writeData = new FileOutputStream(easyPath);
-            ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
+    public void save(String difficulty) {
+        // Lagre resultatene til lokal fil basert på vanskelighetsgrad
+        try {
+            // Vet ikke hva denne gjør, men er viktig
+            ObjectMapper objectMapper = new ObjectMapper();
 
-            writeStream.writeObject(easyResultsList);
-            writeStream.flush();
-            writeStream.close();
-
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Lagre hardResults til lokal fil
-        try{
-            FileOutputStream writeData = new FileOutputStream(hardPath);
-            ObjectOutputStream writeStream = new ObjectOutputStream(writeData);
-
-            writeStream.writeObject(hardResultsList);
-            writeStream.flush();
-            writeStream.close();
-
-        }catch (IOException e) {
+            if (difficulty.equals("easymode")) {
+                objectMapper.writeValue(new File(easyPath), easyResultsList);
+                System.out.println("Objects saved to easy_results.json");
+            } else if (difficulty.equals("hardmode")) {
+                objectMapper.writeValue(new File(hardPath), hardResultsList);
+                System.out.println("Objects saved to hard_results.json");
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -90,26 +88,24 @@ public class LocalStorageService {
     public List<Integer> calculateHistogram(String difficulty) {
 
         List<Integer> scoreList;
+        List<Integer> emptyList = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
+            emptyList.add(1);
+        }
 
         // Henter ut riktige resultater basert på vanskelighetsgraden
         if(difficulty.equals("easymode")) {
-            // Hvis listen er tom, returner null
+            // Hvis listen er tom, returner emptyList
             if (easyResultsList.isEmpty())
-                return null;
+                return emptyList;
 
-            scoreList = easyResultsList
-                    .stream()
-                    .map(EasyResults::getScore)
-                    .toList();
+            scoreList = easyResultsList.stream().map(EasyResults::getScore).toList();
         } else {
-            // Hvis listen er tom, returner null
+            // Hvis listen er tom, returner emptyList
             if (hardResultsList.isEmpty())
-                return null;
+                return emptyList;
 
-            scoreList = hardResultsList
-                    .stream()
-                    .map(HardResults::getScore)
-                    .toList();
+            scoreList = hardResultsList.stream().map(HardResults::getScore).toList();
         }
 
         // Regner ut hvor mange prosent hvert resultat er verdt
@@ -123,7 +119,7 @@ public class LocalStorageService {
 
             // Hvis ingen har fått dette resultatet enda,
             // setter vi den til 1 slik at den blir synlig i histogrammet
-            if(scoreList.stream().filter(score -> score == finalI).count() == 0) {
+            if(scoreList.stream().noneMatch(score -> score == finalI)) {
                 list.add(1);
                 continue;
             }

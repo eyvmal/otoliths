@@ -42,10 +42,8 @@ public class HomepageController {
             model.addAttribute("histogram", resultList);
 
         if (difficulty.equals("easymode")) {
-            // Videresender deg til easymodeView
             return "easymodeView";
         } else {
-            // Videresender deg til hardmodeView
             return "hardmodeView";
         }
     }
@@ -59,8 +57,10 @@ public class HomepageController {
         // Sjekker hvilken vanskelighetsgrad du har aktiv, og bytter den
         if(difficulty.equals("easymode")) {
             session.setAttribute("difficulty", "hardmode");
+            System.out.println("Changing gamemode to hardmode");
         } else {
             session.setAttribute("difficulty", "easymode");
+            System.out.println("Changing gamemode to easymode");
         }
         // Laster inn siden på nytt
         return "redirect:" + HOMEPAGE_URL;
