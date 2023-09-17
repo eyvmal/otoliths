@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
     <title>Annotation Guessing Game - Easy</title>
 </head>
-<body>
+<body dynamic-url="${dynamicUrl}">
 <div id="contentContainer">
     <h2 id="contentHeader">Which one is annotated by a human?</h2>
     <p id="contentDescription">Make your guess by clicking on the picture</p>

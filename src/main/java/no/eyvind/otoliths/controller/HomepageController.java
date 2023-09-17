@@ -42,6 +42,7 @@ public class HomepageController {
 
         // Oppdatere histogrammet med valgt vanskelighetsgrad
         resultList = lss.calculateHistogram(difficulty);
+        model.addAttribute("dynamicUrl", HOMEPAGE_URL); // Used in the JavaScript
         if (resultList != null)
             model.addAttribute("histogram", resultList);
 

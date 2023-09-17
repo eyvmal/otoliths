@@ -105,7 +105,7 @@ function showResults() {
     document.getElementById("column-" + correctGuesses).style.backgroundColor =
         "green";
 
-    let url = "/";
+    let url = document.body.getAttribute("dynamic-url");
     fetch(url, {
         method: "POST",
         headers: {
