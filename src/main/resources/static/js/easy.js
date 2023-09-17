@@ -42,12 +42,12 @@ function loadNextPicture() {
         // Bytter også om bilde1 og bilde2 tilfeldig
         switch (randomNumber(2)) {
             case 1:
-                picture1.src = `https://malde.org/otoliths/human%20annotated/fig_${addZeros(pictureList[0])}.png`;
-                picture2.src = `https://malde.org/otoliths/computer%20annotated/fig_${addZeros(pictureList[0])}.png`;
+                picture1.src = `img/human/fig_${addZeros(pictureList[0])}.png`;
+                picture2.src = `img/computer/fig_${addZeros(pictureList[0])}.png`;
                 break;
             case 2:
-                picture2.src = `https://malde.org/otoliths/human%20annotated/fig_${addZeros(pictureList[0])}.png`;
-                picture1.src = `https://malde.org/otoliths/computer%20annotated/fig_${addZeros(pictureList[0])}.png`;
+                picture2.src = `img/human/fig_${addZeros(pictureList[0])}.png`;
+                picture1.src = `img/computer/fig_${addZeros(pictureList[0])}.png`;
                 break;
         }
 
