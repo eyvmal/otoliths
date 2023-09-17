@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -59,10 +60,11 @@ public class LocalStorageService {
 
     // Legger resultatet inn i listen lokalt
     public void addResult(String username, int score, String difficulty) {
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         if (difficulty.equals("easymode")) {
-            easyResultsList.add(new EasyResults(username, score, new Date()));
+            easyResultsList.add(new EasyResults(username, score, date));
         } else if (difficulty.equals("hardmode")) {
-            hardResultsList.add(new HardResults(username, score, new Date()));
+            hardResultsList.add(new HardResults(username, score, date));
         }
         save(difficulty);
     }

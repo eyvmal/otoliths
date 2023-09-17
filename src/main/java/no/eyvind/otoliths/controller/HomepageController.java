@@ -1,6 +1,8 @@
 package no.eyvind.otoliths.controller;
 
+import no.eyvind.otoliths.entity.JSRequest;
 import no.eyvind.otoliths.entity.LocalStorageService;
+import no.eyvind.otoliths.entity.Statistics;
 import no.eyvind.otoliths.util.LoginUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -23,6 +26,7 @@ public class HomepageController {
     @Value("${app.url.homepage}") private String HOMEPAGE_URL;
 
     LocalStorageService lss = new LocalStorageService();
+    Statistics stats = new Statistics();
     List<Integer> resultList;
 
     @GetMapping
@@ -67,14 +71,16 @@ public class HomepageController {
     }
 
     @PostMapping
-    public void showResults(@RequestBody int correctGuesses, Model model,
-            HttpSession session, RedirectAttributes ra) {
+    public ResponseEntity<Void> showResults(@RequestBody JSRequest jsr, Model model,
+                            HttpSession session, RedirectAttributes ra) {
 
-        // Henter litt info fra sesjonen
         String username = (String)session.getAttribute("username");
         String difficulty = (String)session.getAttribute("difficulty");
 
-        // Lagrer resultatet til postgreSQL databasen
-        lss.addResult(username, correctGuesses, difficulty);
+        // Lagrer resultatet til json og oppdaterer statistikk
+        lss.addResult(username, jsr.getCorrectGuesses(), difficulty);
+        stats.add(jsr.getShownPictures(), jsr.getChosenPictures());
+
+        return ResponseEntity.ok().build();
     }
 }

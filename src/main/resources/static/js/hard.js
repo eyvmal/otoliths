@@ -102,7 +102,6 @@ function calculateCorrect() {
 // Sender resultatet videre til backend for å lagres i databasen
 function showResults() {
     const correctGuesses = calculateCorrect();
-    console.log(correctGuesses);
     document.getElementById("column-" + correctGuesses).style.backgroundColor =
         "green";
 
@@ -112,7 +111,7 @@ function showResults() {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(correctGuesses),
+        body: JSON.stringify({correctGuesses, shownPictures, chosenPictures}),
     })
         .then((response) => {
             contentHeader.textContent = "Results";

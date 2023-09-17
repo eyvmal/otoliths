@@ -11,10 +11,10 @@ public class HardResults implements Serializable {
     @JsonProperty("score")
     private int score;
     @JsonProperty("date")
-    private Date date;
+    private String date;
 
     public HardResults() {}
-    public HardResults(String username, int score, Date date) {
+    public HardResults(String username, int score, String date) {
         this.username = username;
         this.score = score;
         this.date = date;
@@ -35,11 +35,11 @@ public class HardResults implements Serializable {
         this.score = score;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

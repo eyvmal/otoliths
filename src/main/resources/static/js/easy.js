@@ -108,13 +108,12 @@ function showResults() {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(correctGuesses),
+        body: JSON.stringify({correctGuesses, shownPictures, chosenPictures}),
     })
         .then((response) => {
             contentHeader.textContent = "Results";
             contentDescription.textContent =
                 "The histogram is showing your score compared to other people. Your score is highlighted in green";
-
             pictureContainer.style.display = "none";
             histogramContainer.style.display = "flex";
         })
