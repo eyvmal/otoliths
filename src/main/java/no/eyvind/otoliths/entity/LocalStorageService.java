@@ -8,13 +8,15 @@ import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class LocalStorageService {
     private final String easyPath = "src/main/webapp/WEB-INF/easy_results.json";
     private final String hardPath = "src/main/webapp/WEB-INF/hard_results.json";
 
-    private ArrayList<EasyResults> easyResultsList;
-    private ArrayList<HardResults> hardResultsList;
+    private CopyOnWriteArrayList<EasyResults> easyResultsList;
+    private CopyOnWriteArrayList<HardResults> hardResultsList;
 
     public LocalStorageService() {
         // Laste inn easy_resultatene
@@ -27,10 +29,11 @@ public class LocalStorageService {
 
             if (jsonFile.length() > 0) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                easyResultsList = (ArrayList<EasyResults>) objectMapper.readValue(new File(easyPath), new TypeReference<List<EasyResults>>() {});
+                List<EasyResults> list = objectMapper.readValue(new File(easyPath), new TypeReference<List<EasyResults>>() {});
+                easyResultsList = new CopyOnWriteArrayList<>(list);
                 System.out.println("Objects loaded from easy_results.json");
             } else {
-                easyResultsList = new ArrayList<>();
+                easyResultsList = new CopyOnWriteArrayList<>();
                 System.out.println("Nothing to load from easy_results.json");
             }
         } catch (IOException e) {
@@ -47,10 +50,11 @@ public class LocalStorageService {
 
             if (jsonFile.length() > 0) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                hardResultsList = (ArrayList<HardResults>) objectMapper.readValue(new File(hardPath), new TypeReference<List<HardResults>>() {});
+                List<HardResults> list = objectMapper.readValue(new File(hardPath), new TypeReference<List<HardResults>>() {});
+                hardResultsList = new CopyOnWriteArrayList<>(list);
                 System.out.println("Objects loaded from hard_results.json");
             } else {
-                hardResultsList = new ArrayList<>();
+                hardResultsList = new CopyOnWriteArrayList<>();
                 System.out.println("Nothing to load from hard_results.json");
             }
         } catch (IOException e) {
@@ -59,7 +63,7 @@ public class LocalStorageService {
     }
 
     // Legger resultatet inn i listen lokalt
-    public void addResult(String username, int score, String difficulty) {
+    public synchronized void addResult(String username, int score, String difficulty) {
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         if (difficulty.equals("easymode")) {
             easyResultsList.add(new EasyResults(username, score, date));
@@ -69,7 +73,7 @@ public class LocalStorageService {
         save(difficulty);
     }
 
-    public void save(String difficulty) {
+    public synchronized void save(String difficulty) {
         // Lagre resultatene til lokal fil basert på vanskelighetsgrad
         try {
             // Vet ikke hva denne gjør, men er viktig
@@ -111,6 +115,9 @@ public class LocalStorageService {
         }
 
         // Regner ut hvor mange prosent hvert resultat er verdt
+        if (scoreList.size() == 0)
+            return emptyList;
+
         int prosent = 100 / scoreList.size();
 
         List<Integer> list = new ArrayList<>();

@@ -5,29 +5,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Statistics {
     private final String statisticsPath = "src/main/webapp/WEB-INF/statistics.json";
-    private ArrayList<Stat> statistics;
+    private CopyOnWriteArrayList<Stat> statistics;
 
     public Statistics() {
-        // Laste inn easy_resultatene
+        // Loads statistics on class creation
         try {
             File jsonFile = new File(statisticsPath);
-            if (!jsonFile.exists()) { // Oppretter ny fil hvis den ikke allerede finnes
+            if (!jsonFile.exists()) { // Creates a new file if no file was found
                 jsonFile.createNewFile();
                 System.out.println("Created statistics.json");
             }
 
             if (jsonFile.length() > 0) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                statistics = (ArrayList<Stat>) objectMapper.readValue(new File(statisticsPath), new TypeReference<List<Stat>>() {});
+                List<Stat> list = objectMapper.readValue(new File(statisticsPath), new TypeReference<List<Stat>>() {});
+                statistics = new CopyOnWriteArrayList<>(list);
                 System.out.println("Stats loaded from statistics.json");
             } else {
-                statistics = new ArrayList<>();
+                statistics = new CopyOnWriteArrayList<>();
                 System.out.println("Nothing to load from statistics.json");
             }
         } catch (IOException e) {
@@ -35,7 +36,7 @@ public class Statistics {
         }
     }
 
-    public void add(int[] shownPictures, String[] chosenPictures) {
+    public synchronized void add(int[] shownPictures, String[] chosenPictures) {
         System.out.print("Updated stats for: ");
         for (int i = 0; i < shownPictures.length; i++) {
             updateStatistics(shownPictures[i], chosenPictures[i]);
@@ -44,7 +45,7 @@ public class Statistics {
         System.out.println();
     }
 
-    public void updateStatistics(int ID, String result) {
+    public synchronized void updateStatistics(int ID, String result) {
         boolean found = false;
         for (Stat stat : statistics) {
             if (stat.getId() == ID) {
@@ -56,7 +57,6 @@ public class Statistics {
                 found = true;
                 break;
             }
-            save();
         }
 
         if (!found) {
@@ -68,14 +68,13 @@ public class Statistics {
             }
             statistics.add(newStat);
             statistics.sort(Comparator.comparing(Stat::getId));
-            save();
         }
+        save();
     }
 
-    public void save() {
-        // Lagre resultatene til lokal fil basert på vanskelighetsgrad
+    public synchronized void save() {
+        // Maps the java object to JSON, and saves it to file
         try {
-            // Vet ikke hva denne gjør, men er viktig
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValue(new File(statisticsPath), statistics);
         } catch (IOException e) {
