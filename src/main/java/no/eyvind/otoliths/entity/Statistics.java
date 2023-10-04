@@ -2,6 +2,7 @@ package no.eyvind.otoliths.entity;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Service
 public class Statistics {
     private final String statisticsPath = "src/main/webapp/WEB-INF/statistics.json";
     private CopyOnWriteArrayList<Stat> statistics;

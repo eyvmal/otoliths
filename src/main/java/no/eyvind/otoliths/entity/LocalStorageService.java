@@ -2,6 +2,7 @@ package no.eyvind.otoliths.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
+@Service
 public class LocalStorageService {
     private final String easyPath = "src/main/webapp/WEB-INF/easy_results.json";
     private final String hardPath = "src/main/webapp/WEB-INF/hard_results.json";
