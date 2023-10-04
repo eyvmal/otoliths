@@ -66,7 +66,7 @@
         </form>
     </div>
 </div>
-
+<script src="js/common.js"></script>
 <script src="js/hard.js"></script>
 </body>
 </html>
