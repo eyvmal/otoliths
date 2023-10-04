@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -19,13 +23,9 @@ body {
 #contentContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-#contentHeader {
-    text-align: center;
-    font-family: sans-serif;
 }
 
 #histogramContainer {
@@ -54,38 +54,62 @@ body {
     cursor: pointer;
 }
 
+#textContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#textContainer h2 {
+    margin: 15px 0 15px 0;
+}
+
+#textContainer h3 {
+    margin: 10px 0 15px 0;
+}
+#textContainer p {
+    margin: 0;
+}
+
 #pictureContainer {
     display: flex;
     justify-content: center;
+    align-items: center;
+    max-height: 80vh;
+    width: calc(100% - 40px);
+    gap: 20px;
 }
 
 .pictureWrapper {
-    width: 30%;
-    overflow: hidden; /* Sørger for at bildene ikke øker i størrelse */
+    height: 100%;
     cursor: pointer;
-}
-
-.pictureWrapper:first-child {
-    margin-right: 20px; /* Lager et mellomrom mellom bildene */
+    overflow: hidden;
 }
 
 .pictureWrapper img {
     width: 100%;
-    height: auto;
-    transform: scale(1.3); /* Øk for å zoome inn */
-    transform-origin: center;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transform: scale(1.2);
+    transform-origin: center center;
 }
 
-/* Hardmode-spesifikk */
+/* Hardmode-specific */
 .pictureWrapperHard {
+    height: 100%;
     width: 50%;
     overflow: hidden;
 }
 
 .pictureWrapperHard img {
     width: 100%;
-    height: auto;
-    transform: scale(1.3); /* Øk for å zoome inn */
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transform: scale(1.2);
     transform-origin: center;
 }
 

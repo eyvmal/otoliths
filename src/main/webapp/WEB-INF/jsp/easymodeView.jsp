@@ -10,9 +10,11 @@
 </head>
 <body dynamic-url="${dynamicUrl}">
 <div id="contentContainer">
-    <h2 id="contentHeader">Which one is annotated by a human?</h2>
-    <p id="contentDescription">Make your guess by clicking on the picture</p>
-    <h3 id="pictureNumber"></h3>
+    <div id="textContainer">
+        <h2 id="contentHeader">Which one is annotated by a human?</h2>
+        <p id="contentDescription">Make your guess by clicking on the picture</p>
+        <h3 id="pictureNumber"></h3>
+    </div>
     <div id="pictureContainer">
         <div class="pictureWrapper">
             <img id="pictureOne" src="" alt="Picture One">
